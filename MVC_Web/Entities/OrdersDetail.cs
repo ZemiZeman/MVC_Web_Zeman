@@ -12,7 +12,6 @@ namespace MVC_Web.Entities
         [Column("vyrobekId")]
         [ForeignKey("Product")]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
         [Column("objednavkaId")]
         [ForeignKey("Order")]
         public int OrderId { get; set; }
@@ -20,7 +19,8 @@ namespace MVC_Web.Entities
         public int ProductsCount { get; set; }
         [Column("celkova_cena")]
         public float TotalPrice { get; set; }
-        public Order Order { get; set; }
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
 
         public OrdersDetail(int id, int productId, Product product, int orderId, int productsCount, float totalPrice, Order order)
         {

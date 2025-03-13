@@ -13,6 +13,8 @@ namespace MVC_Web.Entities
         public string FirstName { get; set; }
         [Column("prijmeni")]
         public string LastName { get; set; }
+        [Column("uzivatelske_jmeno")]
+        public string Username { get; set; }
         [Column("heslo")]
         public string Password { get; set; }
         [Column("telefon")]
@@ -28,11 +30,12 @@ namespace MVC_Web.Entities
         [Column("role")]
         public string Role { set; get; }
 
-        public Customer(int id, string firstName, string lastName, string password, string phone, string email, string address, string city, string pSC, string role)
+        public Customer(int id, string firstName, string lastName,string username, string password, string phone, string email, string address, string city, string pSC, string role)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
+            Username = username;
             Password = password;
             Phone = phone;
             Email = email;
@@ -47,6 +50,7 @@ namespace MVC_Web.Entities
             Id = 0;
             FirstName = string.Empty;
             LastName = string.Empty;
+            Username= string.Empty;
             Password = string.Empty;
             Phone = string.Empty;
             Email = string.Empty;

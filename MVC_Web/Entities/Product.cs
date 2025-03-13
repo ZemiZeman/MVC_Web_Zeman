@@ -22,8 +22,8 @@ namespace MVC_Web.Entities
         [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
         
-        public Category Category { get; set; }
-        public Manufacturer Manufacturer { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual Manufacturer Manufacturer { get; set; }
 
         public Product()
         {

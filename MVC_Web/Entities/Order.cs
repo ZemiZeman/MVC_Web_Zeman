@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC_Web.Entities
 {
-    [Table("tbObjednvky")]
+    [Table("tbObjednavky")]
     public class Order
     {
         [Key]
@@ -27,12 +27,11 @@ namespace MVC_Web.Entities
         [Column("platba")]
         [ForeignKey("Payment")]
         public int PaymentId { get; set; }
-        [Column("stab_objednavky")]
+        [Column("stav_objednavky")]
         public string OrderState { get; set; }
-        [Column("")]
 
-        public Payment Payment { get; set; }
-        public Delivery Delivery { get; set; }
+        public virtual Payment Payment { get; set; }
+        public virtual Delivery Delivery { get; set; }
 
         public Order(int id, DateTime processingDate, string customerFirstName, string customerLastName, string city, string address, string pSC, int deliveryId, int paymentId, string orderState, Payment payment, Delivery delivery)
         {
