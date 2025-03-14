@@ -1,8 +1,60 @@
-﻿@{
+﻿@using MVC_Web.Models
+@model List<ProductViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<style>
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .card-title {
+            min-height: 3rem; /* Nastavení minimální výšky pro jednotný vzhled */
+        }
+
+    .product-image {
+        max-width: 100%;
+        height: 200px;
+        object-fit: contain;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    </style>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+<div class="container mt-5">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <img src="@Url.Content("~/images/Products/" + @product.Id + ".jpg")" alt="@product.Name" class="product-image">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">Cena: <strong>@product.Price Kč</strong></p>
+                        <a class="btn btn-primary mt-auto" type="button" asp-controller="Product" asp-action="Index" asp-route-id="@product.Id">
+                            Zobrazit product
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

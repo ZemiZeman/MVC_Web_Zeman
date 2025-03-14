@@ -1,0 +1,55 @@
+﻿@using MVC_Web.Models
+@model ProductViewModel
+
+@{
+}
+
+<style>
+    .product-detail {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .product-title {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .product-description {
+        font-size: 1.2rem;
+        margin-top: 15px;
+    }
+
+    .product-image {
+        max-width: 100%;
+        max-height: 400px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="product-detail text-center ">
+        <div class="d-flex flex-row mb-3 justify-content-between">
+            <div>
+                <img src="@Url.Content("~/images/Products/" + Model.Id + ".jpg")" alt="@Model.Name" class="product-image">
+            </div>
+            <div>
+                <h1 class="product-title">@Model.Name</h1>
+                <p class="product-price">Cena: @Model.Price Kč</p>
+                <p class="product-description">@Model.Description</p>
+            </div>
+        </div>
+        <div>
+            <a asp-action="">Přidat do košíku</a>
+        </div>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
+    </div>
+</div>

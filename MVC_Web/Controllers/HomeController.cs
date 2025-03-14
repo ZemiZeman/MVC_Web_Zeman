@@ -10,27 +10,41 @@ namespace MVC_Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private DatabaseContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DatabaseContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? category)
         {
 
-            //List<Category> categories = _databaseContext.Categories.ToList();
-            //List<Manufacturer> manufacturer = _databaseContext.Manufacturer.ToList();
-            //List<Product> products = _databaseContext.Products.ToList();
-            //List<Review> reviews = _databaseContext.Reviews.ToList();
-            //List<OrdersDetail> ordersDetails = _databaseContext.OrdersDetails.ToList();
-            //List<Order> orders = _databaseContext.Orders.ToList();
-            //List<Delivery> deliveries = _databaseContext.Deliveries.ToList();
-            //List<Payment> payments = _databaseContext.Payments.ToList();
-            //List<Customer> customers = _databaseContext.Customers.ToList();
+            List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m=> new ManufacturerViewModel(m.Id,m.Name,m.CounryOrigin)).ToList();
+            List<CategoryViewModel> categories = _dbContext.Categories.Select(c=> new CategoryViewModel(c.Id,c.Name,c.Description)).ToList();
 
-            return View();
+            ViewBag.Categories = categories;
+
+            List<Product> entityProducts = _dbContext.Products.ToList();
+            
+            List<ProductViewModel> products = entityProducts
+                                                .Select(p=> new ProductViewModel(p.Id,p.Name,p.Price,p.Description,p.CategoryId,p.ManufacturerId,
+                                                categories.FirstOrDefault(c=>c.Id==p.CategoryId)!,manufacturers.FirstOrDefault(m=> m.Id ==p.ManufacturerId)!)).ToList();
+            
+
+            if (category != null)
+            {
+               List<ProductViewModel> productWithCategory = products.Where(p => p.Category.Name == category).ToList();
+               return View(productWithCategory);
+            }
+
+
+            return View(products);
         }
+
+
+       
 
         public IActionResult Privacy()
         {
