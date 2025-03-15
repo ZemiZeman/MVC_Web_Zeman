@@ -7,11 +7,11 @@ namespace MVC_Web.Models.Auth
     {
         [Required]
         [MaxLength(50)]
-        [RegularExpression("^[A-Z][a-zA-Z]*$")]
+        [RegularExpression("^[A-Z][a-zA-ZÀ-ž]*$")]
         public string FirstName { get; set; }
         [Required]
         [MaxLength(50)]
-        [RegularExpression("^[A-Z][a-zA-Z]*$")]
+        [RegularExpression("^[A-Z][a-zA-ZÀ-ž]*$")]
         public string LastName { get; set; }
         [Required]
         [MaxLength(100)]

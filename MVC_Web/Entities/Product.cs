@@ -16,7 +16,7 @@ namespace MVC_Web.Entities
         [Column("popis")]
         public string Description { get; set; }
         [Column("kategorieId")]
-        [ForeignKey("Category")]
+        [ForeignKey("CategoryController")]
         public int CategoryId { get; set; }
         [Column("vyrobceId")]
         [ForeignKey("Manufacturer")]

@@ -22,7 +22,7 @@
         font-weight: bold;
     }
 
-    .product-description {
+    .product-description, .product-category,.product-manufacturer {
         font-size: 1.2rem;
         margin-top: 15px;
     }
@@ -50,6 +50,12 @@
                 <p class="product-price">Cena: @Model.Price Kč</p>
                 <p class="product-description">@Model.Description</p>
             </div>
+            
+        </div>
+        <hr />
+        <div>
+            <p class="product-category">Kategorie: @Model.Category.Name</p>
+            <p class="product-manufacturer">Výrobce: @Model.Manufacturer.Name</p>
         </div>
         <div>
             <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-productId="@Model.Id" class="btn btn-primary btn-outline-dark">Přidat do košíku</a>

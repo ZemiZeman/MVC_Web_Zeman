@@ -1,0 +1,77 @@
+﻿@using MVC_Web.Models
+@model ProductViewModel
+
+@{
+    
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] mt-2">
+        @TempData["Message"]
+    </div>
+}
+
+<form asp-action="Add" class="mt-2 mb-2">
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Name" class="col-sm-1 col-form-label">Název</label>
+        <div class="col-sm-4">
+            <input asp-for="Name" type="text" class="form-control">
+            <span asp-validation-for="Name" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Price" class="col-sm-1 col-form-label">Cena</label>
+        <div class="col-sm-4">
+            <input asp-for="Price" type="number" class="form-control">
+            <span asp-validation-for="Price" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Description" class="col-sm-1 col-form-label">Popis</label>
+        <div class="col-sm-4">
+            <input asp-for="Description" type="text" class="form-control">
+            <span asp-validation-for="Description" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="CategoryId" class="col-sm-1 col-form-label">Kategorie</label>
+        <div class="col-sm-4">
+            <select asp-for="CategoryId" class="form-select">
+                <option value="" disabled selected>Zvolte kategorii</option>
+                @foreach(CategoryViewModel category in ViewBag.Categories)
+                {
+                    <option value="@category.Id">@category.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="ManufacturerId" class="col-sm-1 col-form-label">ManufacturerId</label>
+        <div class="col-sm-4">
+            <select asp-for="ManufacturerId" class="form-select">
+                <option value="" disabled selected>Zvolte výrobce</option>
+                @foreach (ManufacturerViewModel manufacturer in ViewBag.Manufacturers)
+                {
+                    <option value="@manufacturer.Id">@manufacturer.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+    
+
+    <div class="row justify-content-center mb-2">
+        <div class="col-5">
+            <button type="submit" class="btn btn-sm btn-primary w-100">
+                Přidat výrobek
+            </button>
+        </div>
+    </div>
+    
+</form>

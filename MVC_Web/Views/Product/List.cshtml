@@ -1,0 +1,69 @@
+﻿@using MVC_Web.Models
+@model List<ProductViewModel>
+
+@{
+}
+
+<style>
+
+    .product-image {
+        max-width: 100%;
+        max-height: 100px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] mt-2">
+        @TempData["Message"]
+    </div>
+}
+
+<div class="mt-2">
+    <a class="btn btn-sm btn-success me-1" asp-controller="Product" asp-action="Add">
+        Add
+    </a>
+    <a class="btn btn-sm btn-dark" asp-controller="Product" asp-action="Index">
+        Reload
+    </a>
+</div>
+
+<table class="table table-hover table-sm text-center mt-2 mb-2">
+    <thead class="table-dark">
+        <tr>
+            <th>Obrázek</th>
+            <th>Název</th>
+            <th>Popis</th>
+            <th>Cena</th>
+            <th>Kategorie</th>
+            <th>Výrobce</th>
+            <th>Akce</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ProductViewModel product in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@Url.Content("~/images/Products/" + product.Id + ".jpg")" alt="@product.Name" class="product-image">
+                </td>
+                <td>@product.Name</td>
+                <td class="col-4">@product.Description</td>
+                <td>@product.Price Kč</td>
+                <td>@product.Category.Name</td>
+                <td>@product.Manufacturer.Name</td>
+                <td>
+                    <a class="btn btn-sm btn-warning me-1" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id">
+                        Edit
+                    </a>
+                    <a class="btn btn-sm btn-danger" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
