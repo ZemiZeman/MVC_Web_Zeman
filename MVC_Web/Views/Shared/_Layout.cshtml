@@ -19,10 +19,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-
+                        
                         @if(ViewBag.Categories != null)
                         {
                             @foreach (CategoryViewModel category in ViewBag.Categories)
@@ -34,10 +31,35 @@
                         }
                     </ul>
 
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                    <ul class="navbar-nav d-flex gap-2">
+
+                            @if (ViewBag.IsAuthenticated)
+                            {
+                                <li class="nav-item d-flex align-items-center">
+                                    <span class="navbar-text me-3">Logged in as @ViewBag.Username [@ViewBag.Role]</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-danger" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                </li>
+
+                                @if(ViewBag.Role == "user"){
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-controller="Order" asp-action="MyOrders">Moje objednávky 📃</a>
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary" asp-controller="Auth" asp-action="Login">Login</a>
+                                </li>
+                            }
+
                             
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="Index">🛒</a>
+
+                        <li class="nav-item">
+
+                            <a class="btn btn-info" asp-area="" asp-controller="ShoppingCart" asp-action="Index">Košík 🛒</a>
                         </li>
                     </ul>
                 </div>

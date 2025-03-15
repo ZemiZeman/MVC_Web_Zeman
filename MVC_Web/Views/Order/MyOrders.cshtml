@@ -1,0 +1,36 @@
+﻿@using MVC_Web.Models.Order
+@model List<MyOrderViewModel>
+
+@{
+}
+
+
+<table class="table table-hover table-sm text-center mt-2 mb-2">
+    <thead class="table-dark">
+        <tr>
+            <th>Datum</th>
+            <th>Doručení</th>
+            <th>Platba</th>
+            <th>Stav objednávky</th>
+            <th>Price</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (MyOrderViewModel order in Model)
+        {
+            <tr>
+                <td>@order.ProcessingDate</td>
+                <td>@order.Delivery.Name</td>
+                <td>@order.Payment.Name</td>
+                <td>@order.OrderState</td>
+                <td>@order.TotalPrice Kč</td>
+                <td>
+                    <a class="btn btn-sm btn-warning me-1" asp-controller="Order" asp-action="OrderDetail" asp-route-id="@order.Id">
+                        Detail
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

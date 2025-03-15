@@ -33,6 +33,10 @@
         margin-bottom: 20px;
         border-radius: 10px;
     }
+
+    .btn-primary{
+        color:white;
+    }
 </style>
 
 <div class="container mt-5">
@@ -48,7 +52,7 @@
             </div>
         </div>
         <div>
-            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-productId="@Model.Id">Přidat do košíku</a>
+            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-productId="@Model.Id" class="btn btn-primary btn-outline-dark">Přidat do košíku</a>
         </div>
         <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
     </div>

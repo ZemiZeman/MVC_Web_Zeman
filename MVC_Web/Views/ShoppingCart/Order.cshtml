@@ -1,4 +1,4 @@
-﻿@using MVC_Web.Models
+﻿@using MVC_Web.Models.Order
 @model OrderViewModel
 
 @{
@@ -10,12 +10,24 @@
         <!-- Jméno a příjmení -->
         <div class="mb-3">
             <label asp-for="CustomerFirstName" class="form-label">Jméno</label>
-            <input type="text" class="form-control" id="CustomerFirstName" name="CustomerFirstName" required>
+            <input type="text" class="form-control" asp-for="CustomerFirstName" required>
         </div>
 
         <div class="mb-3">
-            <label for="CustomerLastName" class="form-label">Příjmení</label>
+            <label asp-for="CustomerLastName" class="form-label">Příjmení</label>
             <input type="text" class="form-control" asp-for="CustomerLastName" required>
+        </div>
+
+        <!-- Kontaktní údaje-->
+
+        <div class="mb-3">
+            <label asp-for="CustomerPhone" class="form-label">Telefon</label>
+            <input type="text" class="form-control" asp-for="CustomerPhone" required>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CustomerEmail" class="form-label">Email</label>
+            <input type="text" class="form-control" asp-for="CustomerEmail" required>
         </div>
 
         <!-- Město a adresa -->

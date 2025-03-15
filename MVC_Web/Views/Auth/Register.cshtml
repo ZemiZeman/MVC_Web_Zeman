@@ -1,0 +1,113 @@
+﻿@using MVC_Web.Models.Auth
+@model RegisterViewModel
+
+@{
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] mt-2">
+        @TempData["Message"]
+    </div>
+}
+
+<form asp-action="Register" class="mt-2 mb-2">
+    <div class="row justify-content-center mb-2">
+        <label asp-for="FirstName" class="col-sm-1 col-form-label">Jméno</label>
+        <div class="col-sm-4">
+            <input asp-for="FirstName" type="text" class="form-control">
+            <span asp-validation-for="FirstName" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="LastName" class="col-sm-1 col-form-label">Příjmení</label>
+        <div class="col-sm-4">
+            <input asp-for="LastName" type="text" class="form-control">
+            <span asp-validation-for="LastName" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Username" class="col-sm-1 col-form-label">Uživatelské jméno</label>
+        <div class="col-sm-4">
+            <input asp-for="Username" type="text" class="form-control">
+            <span asp-validation-for="Username" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Password" class="col-sm-1 col-form-label">Heslo</label>
+        <div class="col-sm-4">
+            <input asp-for="Password" type="password" class="form-control">
+            <span asp-validation-for="Password" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Phone" class="col-sm-1 col-form-label">Telefon</label>
+        <div class="col-sm-4">
+            <input asp-for="Phone" type="text" class="form-control">
+            <span asp-validation-for="Phone" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Email" class="col-sm-1 col-form-label">Email</label>
+        <div class="col-sm-4">
+            <input asp-for="Email" type="text" class="form-control">
+            <span asp-validation-for="Email" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="Address" class="col-sm-1 col-form-label">Ulice</label>
+        <div class="col-sm-4">
+            <input asp-for="Address" type="text" class="form-control">
+            <span asp-validation-for="Address" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="City" class="col-sm-1 col-form-label">Město</label>
+        <div class="col-sm-4">
+            <input asp-for="City" type="text" class="form-control">
+            <span asp-validation-for="City" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <label asp-for="PSC" class="col-sm-1 col-form-label">PSČ</label>
+        <div class="col-sm-4">
+            <input asp-for="PSC" type="text" class="form-control">
+            <span asp-validation-for="PSC" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    @if(ViewBag.Role == "admin")
+    {
+        <div class="row justify-content-center mb-2">
+            <label asp-for="Role" class="col-sm-1 col-form-label">PSČ</label>
+            <div class="col-sm-4">
+                <select class="form-select" asp-for="Role">
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div>
+        </div>
+    }
+
+    <div class="row justify-content-center mb-2">
+        <div class="col-5">
+            <button type="submit" class="btn btn-sm btn-primary w-100">
+                Login
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-2">
+        <div class="d-flex flex-row mb-3 justify-content-center">
+            <p class="p-2">Již máte účet?</p>
+            <a class="p-2" asp-action="Login" asp-controller="Auth">Přihlášení</a>
+        </div>
+    </div>
+</form>

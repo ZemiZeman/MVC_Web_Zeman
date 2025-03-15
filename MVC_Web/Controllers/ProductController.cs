@@ -7,7 +7,7 @@ using MVC_Web.Models;
 
 namespace MVC_Web.Controllers
 {
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private DatabaseContext  _dbContext;
 

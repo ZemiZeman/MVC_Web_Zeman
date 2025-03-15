@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace MVC_Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private DatabaseContext _dbContext;

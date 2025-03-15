@@ -3,13 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using MVC_Web.Database;
 using MVC_Web.Entities;
 using MVC_Web.Models;
+using MVC_Web.Models.Order;
 using MySqlX.XDevAPI;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MVC_Web.Controllers
 {
-    public class ShoppingCartController : Controller
+    public class ShoppingCartController : BaseController
     {
         private DatabaseContext _dbContext;
 
@@ -95,6 +96,23 @@ namespace MVC_Web.Controllers
             ViewBag.Payments = paymentList;
             ViewBag.Deliveries = deliveries;
 
+            string? customerJson = HttpContext.Session.GetString("Customer");
+
+            if (customerJson != null)
+            {
+                Customer customer = JsonSerializer.Deserialize<Customer>(customerJson)!;
+
+                orderViewModel.CustomerFirstName = customer.FirstName;
+                orderViewModel.CustomerLastName = customer.LastName;
+                orderViewModel.CustomerPhone = customer.Phone;
+                orderViewModel.CustomerEmail = customer.Email;
+                orderViewModel.City = customer.City;
+                orderViewModel.Address = customer.Address;
+                orderViewModel.PSC = customer.PSC;
+
+            }
+
+
             return View(orderViewModel);
         }
 
@@ -115,6 +133,8 @@ namespace MVC_Web.Controllers
             Order newOrder = new Order();
             newOrder.CustomerFirstName = order.CustomerFirstName;
             newOrder.CustomerLastName = order.CustomerLastName;
+            newOrder.CustomerPhone = order.CustomerPhone;
+            newOrder.CustomerEmail = order.CustomerEmail;
             newOrder.City = order.City;
             newOrder.Address = order.Address;
             newOrder.PSC = order.PSC;
@@ -122,8 +142,14 @@ namespace MVC_Web.Controllers
             newOrder.PaymentId = order.PaymentId;
             newOrder.Payment = _dbContext.Payments.FirstOrDefault(p => p.Id == order.PaymentId)!;
             newOrder.Delivery = _dbContext.Deliveries.FirstOrDefault(d => d.Id == order.DeliveryId)!;
-
             newOrder.OrderState = "new";
+
+            if (ViewBag.IsAuthenticated)
+            {
+                Customer customer = JsonSerializer.Deserialize<Customer>(HttpContext.Session.GetString("Customer")!)!;
+                newOrder.CustomerId = customer.Id;
+            }
+
 
             _dbContext.Orders.Add(newOrder);
             _dbContext.SaveChanges();
