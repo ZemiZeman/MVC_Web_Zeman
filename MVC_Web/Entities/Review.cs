@@ -18,6 +18,7 @@ namespace MVC_Web.Entities
         [Column("vyrobekId")]
         [ForeignKey("Product")]
         public int ProductId { get; set; }
+        [NotMapped]
         public virtual Product Product { get; set; }
 
         public Review()

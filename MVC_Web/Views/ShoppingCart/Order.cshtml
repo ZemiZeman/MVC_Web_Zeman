@@ -1,0 +1,75 @@
+﻿@using MVC_Web.Models
+@model OrderViewModel
+
+@{
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Objednávkový formulář</h2>
+    <form asp-action="FinishOrder">
+        <!-- Jméno a příjmení -->
+        <div class="mb-3">
+            <label asp-for="CustomerFirstName" class="form-label">Jméno</label>
+            <input type="text" class="form-control" id="CustomerFirstName" name="CustomerFirstName" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="CustomerLastName" class="form-label">Příjmení</label>
+            <input type="text" class="form-control" asp-for="CustomerLastName" required>
+        </div>
+
+        <!-- Město a adresa -->
+        <div class="mb-3">
+            <label asp-for="City" class="form-label">Město</label>
+            <input class="form-control" asp-for="City" required>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label">Adresa</label>
+            <input class="form-control" asp-for="Address" required>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PSC" class="form-label">PSČ</label>
+            <input  asp-for="PSC" class="form-control" required>
+        </div>
+
+        <!-- Výběr dopravy -->
+        <div class="mb-3">
+            <label asp-for="DeliveryId" class="form-label">Doprava</label>
+            <select class="form-select" asp-for="DeliveryId">
+                <option value="" disabled selected>Vyberte doručení...</option>
+                @foreach (DeliveryViewModel item in ViewBag.Deliveries)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+
+        <!-- Výběr platby -->
+        <div class="mb-3">
+            <label asp-for="PaymentId" class="form-label">Platba</label>
+            <select class="form-select" asp-for="PaymentId" required>
+                <option value="" disabled selected>Vyberte platbu...</option>
+                @foreach (PaymentViewModel item in ViewBag.Payments)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+
+
+        <!-- Odeslání formuláře -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <button type="submit" class="btn btn-sm btn-success me-1">
+                    Potvrdit Objednávku
+                </button>
+                <a class="btn btn-sm btn-danger" asp-controller="ShoppingCart" asp-action="Index">
+                    Zrušit
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+

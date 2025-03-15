@@ -19,7 +19,9 @@ namespace MVC_Web.Entities
         public int ProductsCount { get; set; }
         [Column("celkova_cena")]
         public float TotalPrice { get; set; }
+        [NotMapped]
         public virtual Order Order { get; set; }
+        [NotMapped]
         public virtual Product Product { get; set; }
 
         public OrdersDetail(int id, int productId, Product product, int orderId, int productsCount, float totalPrice, Order order)

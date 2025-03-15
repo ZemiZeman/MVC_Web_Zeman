@@ -48,7 +48,7 @@
             </div>
         </div>
         <div>
-            <a asp-action="">Přidat do košíku</a>
+            <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-productId="@Model.Id">Přidat do košíku</a>
         </div>
         <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
     </div>

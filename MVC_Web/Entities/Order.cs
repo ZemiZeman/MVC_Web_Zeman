@@ -30,7 +30,9 @@ namespace MVC_Web.Entities
         [Column("stav_objednavky")]
         public string OrderState { get; set; }
 
+        [NotMapped]
         public virtual Payment Payment { get; set; }
+        [NotMapped]
         public virtual Delivery Delivery { get; set; }
 
         public Order(int id, DateTime processingDate, string customerFirstName, string customerLastName, string city, string address, string pSC, int deliveryId, int paymentId, string orderState, Payment payment, Delivery delivery)

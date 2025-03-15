@@ -1,0 +1,49 @@
+﻿@using MVC_Web.Models
+@model List<OrdersDetailViewModel>
+@{
+}
+
+<style>
+    .product-image {
+        max-width: 100%;
+        max-height: 150px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+</style>
+
+
+
+@if(Model == null)
+{
+    <div>Nemáte nic v košíku</div>
+}
+else
+{
+    @foreach (OrdersDetailViewModel ordersDetail in Model)
+    {
+        <div class="d-flex justify-content-around">
+            <div class="d-flex flex-row mb-3 align-items-center gap-3">
+                <div>
+                    <img src="@Url.Content("~/images/Products/" + ordersDetail.ProductId + ".jpg")" alt="@ordersDetail.Product.Name" class="product-image">
+                </div>
+                <div>
+                    <p>@ordersDetail.Product.Name</p>
+                    <p>@ordersDetail.Product.Price Kč</p>
+                </div>
+            </div>
+            <div class="d-flex flex-row mb-3 align-items-center gap-5">
+                <p col-md-4>Množství: @ordersDetail.ProductsCount</p>
+                <p>Celková Cena: @ordersDetail.TotalPrice Kč</p>
+            </div>
+        </div>
+    }
+
+    <hr>
+    <div class="d-flex justify-content-around">
+        <p>Celková cena: @Model.Sum(m=>m.TotalPrice) Kč</p>
+        <a asp-action="Order" asp-controller="ShoppingCart" class="btn btn-success">Pokračovat v objednávce</a>
+    </div>
+}
+
+

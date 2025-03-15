@@ -21,8 +21,10 @@ namespace MVC_Web.Entities
         [Column("vyrobceId")]
         [ForeignKey("Manufacturer")]
         public int ManufacturerId { get; set; }
-        
+
+        [NotMapped]
         public virtual Category Category { get; set; }
+        [NotMapped]
         public virtual Manufacturer Manufacturer { get; set; }
 
         public Product()
