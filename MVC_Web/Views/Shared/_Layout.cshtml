@@ -47,7 +47,14 @@
                                         <a class="btn btn-secondary" asp-controller="Order" asp-action="MyOrders">Moje objednávky 📃</a>
                                     </li>
                                 }
-                            }
+
+                                @if (ViewBag.Role == "admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="btn btn-secondary" asp-controller="Order" asp-action="AllOrders">Všechny objednávky 📃</a>
+                                    </li>
+                                }
+                        }
                             else
                             {
                                 <li class="nav-item">

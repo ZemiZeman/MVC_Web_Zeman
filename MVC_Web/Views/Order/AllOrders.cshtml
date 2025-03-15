@@ -4,6 +4,12 @@
 @{
 }
 
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] mt-2">
+        @TempData["Message"]
+    </div>
+}
 
 <table class="table table-hover table-sm text-center mt-2 mb-2">
     <thead class="table-dark">
@@ -14,6 +20,8 @@
             <th>Stav objednávky</th>
             <th>Price</th>
             <th>Detail</th>
+            <th>Edit</th>
+
         </tr>
     </thead>
     <tbody>
@@ -28,6 +36,11 @@
                 <td>
                     <a class="btn btn-sm btn-warning me-1" asp-controller="Order" asp-action="OrderDetail" asp-route-id="@order.Id">
                         Detail
+                    </a>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-warning me-1" asp-controller="Order" asp-action="ChangeStateOfOrder" asp-route-id="@order.Id">
+                        Změnit stav objednávky
                     </a>
                 </td>
             </tr>

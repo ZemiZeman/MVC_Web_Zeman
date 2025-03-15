@@ -1,0 +1,34 @@
+﻿@using MVC_Web.Models.Order
+@model ChangeOrderStateViewModel
+
+@{
+}
+
+<form asp-action="ChangeStateOfOrder" class="mt-2 mb-2">
+    <div class="d-flex flex-row mb-3 justify-content-center gap-4">
+        <p><strong>Objednávka číslo:</strong> @Model.Id</></p>
+        <p><strong>Datum objednávky</strong> @Model.ProcessingDate</p>
+        <p><strong>Cena Objednávky:</strong> @Model.TotalPrice Kč</p>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-4">
+            <label asp-for="OrderState" class="form-label"><strong>Cena Objednávky:</strong></label>
+            <select asp-for="OrderState" class="form-select">
+                <option value="Nová">Nová</option>
+                <option value="Zpracovává se">Zpracovává se</option>
+                <option value="Odeslána">Odeslána</option>
+                <option value="Vyřízena">Vyřízena</option>
+            </select>
+        </div>
+
+        
+    </div>
+
+    <div class="row justify-content-center mb-2">
+        <div class="col-4">
+            <button type="submit" class="btn btn-sm btn-primary w-100">
+                Změnit
+            </button>
+        </div>
+    </div>
+</form>

@@ -142,7 +142,7 @@ namespace MVC_Web.Controllers
             newOrder.PaymentId = order.PaymentId;
             newOrder.Payment = _dbContext.Payments.FirstOrDefault(p => p.Id == order.PaymentId)!;
             newOrder.Delivery = _dbContext.Deliveries.FirstOrDefault(d => d.Id == order.DeliveryId)!;
-            newOrder.OrderState = "new";
+            newOrder.OrderState = "nová";
 
             if (ViewBag.IsAuthenticated)
             {

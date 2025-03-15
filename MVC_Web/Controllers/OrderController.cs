@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVC_Web.Attributes;
 using MVC_Web.Database;
 using MVC_Web.Entities;
 using MVC_Web.Models;
+using MVC_Web.Models.Auth;
 using MVC_Web.Models.Order;
 using System.Text.Json;
 
@@ -33,7 +35,7 @@ namespace MVC_Web.Controllers
                     new PaymentViewModel(payments.SingleOrDefault(p=>p.Id==o.PaymentId)!.Id, payments.SingleOrDefault(p => p.Id == o.PaymentId)!.Name),
                     new DeliveryViewModel(delivery.SingleOrDefault(d=>d.Id==o.DeliveryId)!.Id, delivery.SingleOrDefault(d => d.Id == o.DeliveryId)!.Name))).ToList();
 
-             
+            TempData["ActionOfOrderDetail"] = "MyOrders";
 
             return View(myOrders);
         }
@@ -68,5 +70,73 @@ namespace MVC_Web.Controllers
 
             return View(ordersDetailViewModels);
         }
+
+        [RequireRole("admin")]
+        public IActionResult AllOrders()
+        {
+
+            List<Order> orders = _dbContext.Orders.ToList();
+
+            List<DeliveryViewModel> delivery = _dbContext.Deliveries.Select(d => new DeliveryViewModel(d.Id, d.Name)).ToList();
+            List<PaymentViewModel> payments = _dbContext.Payments.Select(p => new PaymentViewModel(p.Id, p.Name)).ToList();
+
+            List<MyOrderViewModel> allOrders = orders.Select(o => new MyOrderViewModel(
+                    o.Id,
+                    o.ProcessingDate,
+                    o.OrderState,
+                    _dbContext.OrdersDetails.Where(od => od.OrderId == o.Id).Sum(od => od.TotalPrice),
+                    new PaymentViewModel(payments.SingleOrDefault(p => p.Id == o.PaymentId)!.Id, payments.SingleOrDefault(p => p.Id == o.PaymentId)!.Name),
+                    new DeliveryViewModel(delivery.SingleOrDefault(d => d.Id == o.DeliveryId)!.Id, delivery.SingleOrDefault(d => d.Id == o.DeliveryId)!.Name))).ToList();
+
+            TempData["ActionOfOrderDetail"] = "AllOrders";
+
+            return View(allOrders);
+        }
+
+        [RequireRole("admin")]
+        public IActionResult ChangeStateOfOrder(int id)
+        {
+            Order? order = _dbContext.Orders.SingleOrDefault(o => o.Id == id);
+
+            if (order == null)
+            {
+                TempData["Message"] = "We coulnd't find this order!";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("AllOrders");
+            }
+
+
+            ChangeOrderStateViewModel orderToChange = new ChangeOrderStateViewModel(
+                    order.Id,
+                    order.ProcessingDate,
+                    order.OrderState,
+                    _dbContext.OrdersDetails.Where(od => od.OrderId == order.Id).Sum(od => od.TotalPrice));
+            
+            return View(orderToChange);
+        }
+
+        [RequireRole("admin")]
+        [HttpPost]
+        public IActionResult ChangeStateOfOrder(ChangeOrderStateViewModel changeOrder)
+        {
+            Order? order = _dbContext.Orders.SingleOrDefault(o=>o.Id == changeOrder.Id)!;
+
+            if (order == null)
+            {
+                TempData["Message"] = "We coulnd't find this order!";
+                TempData["MessageType"] = "danger";
+                return RedirectToAction("AllOrders");
+            }
+
+            order.OrderState = changeOrder.OrderState;
+
+            _dbContext.Orders.Update(order);
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("AllOrders");
+
+        }
+
+
     }
 }
