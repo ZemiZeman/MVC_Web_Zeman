@@ -4,6 +4,7 @@ using MVC_Web.Database;
 using MVC_Web.Entities;
 using MVC_Web.Models;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace MVC_Web.Controllers
 {
@@ -18,7 +19,7 @@ namespace MVC_Web.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index(string? category)
+        public IActionResult Index(string? category,string? searchFilter)
         {
 
             List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m=> new ManufacturerViewModel(m.Id,m.Name,m.CounryOrigin)).ToList();
@@ -35,10 +36,14 @@ namespace MVC_Web.Controllers
 
             if (category != null)
             {
-               List<ProductViewModel> productWithCategory = products.Where(p => p.Category.Name == category).ToList();
-               return View(productWithCategory);
+                products.RemoveAll(p => p.Category.Name != category);
+
             }
 
+            if(searchFilter != null)
+            {
+                products.RemoveAll(p => !Regex.IsMatch(p.Name, searchFilter, RegexOptions.IgnoreCase) && !Regex.IsMatch(p.Description,searchFilter,RegexOptions.IgnoreCase));
+            }
 
             return View(products);
         }

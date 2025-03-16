@@ -37,6 +37,11 @@
     <p>Jsme nejlepší řetězec pro nákup nábytku.</p>
 </div>
 
+<form class="d-flex flex-row mb-3" asp-action="Index" asp-controller="Home">
+    <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
+    <input name="searchFilter" class="form-control me-1" type="search" placeholder="Vyhledejte produkt..." />
+    <button class="btn btn-dark" type="submit">Hledat 🔎</button>
+</form>
 
 <div class="container mt-5">
     <div class="row">
