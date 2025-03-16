@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_Web.Database;
@@ -19,7 +20,7 @@ namespace MVC_Web.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index(string? category,string? searchFilter)
+        public IActionResult Index(string? category,string? searchFilter,int? manufacturerId,float? minPrice,float? maxPrice,bool? redirectedFromProduct)
         {
 
             List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m=> new ManufacturerViewModel(m.Id,m.Name,m.CounryOrigin)).ToList();
@@ -32,7 +33,47 @@ namespace MVC_Web.Controllers
             List<ProductViewModel> products = entityProducts
                                                 .Select(p=> new ProductViewModel(p.Id,p.Name,p.Price,p.Description,p.CategoryId,p.ManufacturerId,
                                                 categories.FirstOrDefault(c=>c.Id==p.CategoryId)!,manufacturers.FirstOrDefault(m=> m.Id ==p.ManufacturerId)!)).ToList();
+
+            if (redirectedFromProduct != null)
+            {
+                category = HttpContext.Session.GetString("category");
+                searchFilter = HttpContext.Session.GetString("searchFilter");
+                if(HttpContext.Session.GetString("manufacturerId") != null)
+                    manufacturerId = int.Parse(HttpContext.Session.GetString("manufacturerId")!);
+                if(HttpContext.Session.GetString("minPrice") != null)
+                    minPrice = float.Parse(HttpContext.Session.GetString("minPrice")!);
+                if (HttpContext.Session.GetString("maxPrice") != null)
+                    maxPrice = float.Parse(HttpContext.Session.GetString("maxPrice")!);
+            }
+            else
+            {
+                if(category != null)
+                    HttpContext.Session.SetString("category", category!);
+                else
+                    HttpContext.Session.Remove("category");
+                
+                if (searchFilter != null)
+                    HttpContext.Session.SetString("searchFilter", searchFilter!);
+                else
+                    HttpContext.Session.Remove("searchFilter");
+                
+                if (manufacturerId != null)    
+                    HttpContext.Session.SetString("manufacturerId", manufacturerId.ToString()!);
+                else
+                    HttpContext.Session.Remove("manufacturerId");
+
+                if (minPrice != null)
+                    HttpContext.Session.SetString("minPrice", minPrice.ToString()!);
+                else
+                    HttpContext.Session.Remove("minPrice");
+
+                if (maxPrice != null)
+                    HttpContext.Session.SetString("maxPrice", maxPrice.ToString()!);
+                else
+                    HttpContext.Session.Remove("maxPrice");
+            }
             
+                                      
 
             if (category != null)
             {
@@ -45,11 +86,46 @@ namespace MVC_Web.Controllers
                 products.RemoveAll(p => !Regex.IsMatch(p.Name, searchFilter, RegexOptions.IgnoreCase) && !Regex.IsMatch(p.Description,searchFilter,RegexOptions.IgnoreCase));
             }
 
+            if(manufacturerId != null)
+            {
+                products.RemoveAll(p=> p.ManufacturerId != manufacturerId);
+            }
+
+            if (minPrice == null)
+            {
+                if(products.Count > 0)
+                    minPrice = products.OrderBy(p => p.Price).Select(p => p.Price).First();
+            }
+                
+
+            if (maxPrice == null)
+            {
+                if(products.Count > 0)
+                    maxPrice = products.OrderByDescending(p => p.Price).Select(p => p.Price).First();
+            }
+                
+
+            products.RemoveAll(p=> p.Price < minPrice || p.Price > maxPrice);
+
+            ViewBag.Manufacturers = manufacturers;
+
             return View(products);
         }
 
 
-       
+        public IActionResult RestartFilter()
+        {
+            HttpContext.Session.Remove("category");
+            HttpContext.Session.Remove("searchFilter");
+            HttpContext.Session.Remove("manufacturerId");
+            HttpContext.Session.Remove("minPrice");
+            HttpContext.Session.Remove("maxPrice");
+
+            return RedirectToAction("Index");
+        }
+
+
+
 
         public IActionResult Privacy()
         {

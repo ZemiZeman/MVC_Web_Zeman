@@ -60,6 +60,6 @@
         <div>
             <a asp-action="AddToCart" asp-controller="ShoppingCart" asp-route-productId="@Model.Id" class="btn btn-primary btn-outline-dark">Přidat do košíku</a>
         </div>
-        <a asp-action="Index" asp-controller="Home" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
+        <a asp-action="Index" asp-controller="Home" asp-route-redirectedFromProduct="@true" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
     </div>
 </div>

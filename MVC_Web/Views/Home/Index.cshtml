@@ -3,6 +3,15 @@
 
 @{
     ViewData["Title"] = "Home Page";
+
+
+    ViewBag.Category = @Context.Request.Query["category"];
+    ViewBag.SearchFilter = @Context.Request.Query["searchFilter"];
+    ViewBag.ManufacturerId = @Context.Request.Query["manufacturerId"];
+    ViewBag.MinPrice = @Context.Request.Query["minPrice"];
+    ViewBag.MaxPrice = @Context.Request.Query["maxPrice"];
+
+
 }
 
 <style>
@@ -30,6 +39,10 @@
         border-top-right-radius: 10px;
     }
 
+    button[type="submit"], a.btn-danger{
+        height: fit-content;
+    }
+
     </style>
 
 <div class="text-center">
@@ -37,11 +50,53 @@
     <p>Jsme nejlepší řetězec pro nákup nábytku.</p>
 </div>
 
-<form class="d-flex flex-row mb-3" asp-action="Index" asp-controller="Home">
-    <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
-    <input name="searchFilter" class="form-control me-1" type="search" placeholder="Vyhledejte produkt..." />
-    <button class="btn btn-dark" type="submit">Hledat 🔎</button>
+<form class="d-flex flex-column mb-3 gap-3" asp-action="Index" asp-controller="Home">
+    <div>
+        <input type="hidden" name="category" value="@Context.Request.Query["category"]" />
+        <input name="searchFilter" class="form-control me-1" type="search" placeholder="Vyhledejte produkt..." />
+    </div>
+
+
+<div class="d-flex flex-row mb-3 gap-4" asp-action="Index" asp-controller="Home">
+
+    <div class="col-3">
+        <label>Min. cena</label>
+        <input class="form-control me-1" type="number" name="minPrice" min="0" />
+    </div>
+
+    <div class="col-3">
+        <label>Max. cena</label>
+        <input class="form-control me-1" type="number" name="maxPrice" max="999999" />
+    </div>
+
+    <div class="col-3">
+        <label>Výrobce</label>
+        <select name="manufacturerId" class="form-control me-1">
+            <option value="">...</option>
+            @foreach(ManufacturerViewModel manufacturer in ViewBag.Manufacturers)
+            {
+                <option value="@manufacturer.Id">@manufacturer.Name</option>
+            }
+        </select>
+    </div>
+    <div class="align-content-end">
+        <button type="submit" class="btn btn-dark">Filtrovat 🪄</button>
+        
+    </div>
+    <div class="align-content-end">
+        <a asp-action="RestartFilter" asp-controller="Home" class="btn btn-danger">Resetovat Filtr 🔄️</a>
+    </div>
+</div>
 </form>
+
+@if(Model.Count <= 0)
+{
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="row">
+            <p class="fs-1 text-danger">Žádný produkt neodpovídá vašemu filtru</p>
+        </div>
+    </div>
+}
 
 <div class="container mt-5">
     <div class="row">
