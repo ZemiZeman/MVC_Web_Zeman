@@ -12,10 +12,12 @@ namespace MVC_Web.Controllers
     public class ProductController : BaseController
     {
         private DatabaseContext  _dbContext;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(DatabaseContext dbDontext)
+        public ProductController(DatabaseContext dbDontext, IWebHostEnvironment webHostEnvironment)
         {
             _dbContext = dbDontext;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -68,19 +70,45 @@ namespace MVC_Web.Controllers
         [RequireRole("admin")]
         public IActionResult Add()
         {
+            LoadCategoriesAndManufacturers();
+
+            return View(new ProductViewModel());
+        }
+
+        private void LoadCategoriesAndManufacturers()
+        {
             List<CategoryViewModel> categories = _dbContext.Categories.Select(c => new CategoryViewModel(c.Id, c.Name, c.Description)).ToList();
             List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m => new ManufacturerViewModel(m.Id, m.Name, m.CounryOrigin)).ToList();
 
             ViewBag.Categories = categories;
             ViewBag.Manufacturers = manufacturers;
-
-            return View(new ProductViewModel());
         }
 
         [RequireRole("admin")]
         [HttpPost]
         public IActionResult Add(ProductViewModel product)
         {
+            if (product.ImageFile != null)
+            {
+                if (product.ImageFile.Length > 10 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("ImageFile", "Product image size cannot exceed 10 MB!");
+                    LoadCategoriesAndManufacturers();
+                    return View(product);
+                }
+                if (Path.GetExtension(product.ImageFile.FileName).ToLower() != ".jpg")
+                {
+                    ModelState.AddModelError("ImageFile", "Product image must be .jpg only!");
+                    LoadCategoriesAndManufacturers();
+                    return View(product);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("ImageFile", "Product image is required!");
+                LoadCategoriesAndManufacturers();
+                return View(product);
+            }
 
             List<CategoryViewModel> categories = _dbContext.Categories.Select(c => new CategoryViewModel(c.Id, c.Name, c.Description)).ToList();
             List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m => new ManufacturerViewModel(m.Id, m.Name, m.CounryOrigin)).ToList();
@@ -110,7 +138,20 @@ namespace MVC_Web.Controllers
             _dbContext.Products.Add(newProduct);
             _dbContext.SaveChanges();
 
-            
+            if (product.ImageFile != null)
+            {
+                string dirPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "Products");
+
+                if (!Directory.Exists(dirPath))
+                    Directory.CreateDirectory(dirPath);
+
+                string filePath = Path.Combine(dirPath, $"{newProduct.Id}.jpg");
+                using FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                product.ImageFile.CopyTo(fileStream);
+            }
+
+            TempData["Message"] = $"Výrobek {newProduct.Name} has been successfully added.";
+            TempData["MessageType"] = "success";
 
             return RedirectToAction("List");
         }
@@ -118,6 +159,8 @@ namespace MVC_Web.Controllers
         [RequireRole("admin")]
         public IActionResult Edit(int id)
         {
+
+
             List<CategoryViewModel> categories = _dbContext.Categories.Select(c => new CategoryViewModel(c.Id, c.Name, c.Description)).ToList();
             List<ManufacturerViewModel> manufacturers = _dbContext.Manufacturer.Select(m => new ManufacturerViewModel(m.Id, m.Name, m.CounryOrigin)).ToList();
 
@@ -151,6 +194,29 @@ namespace MVC_Web.Controllers
         [HttpPost]
         public IActionResult Edit(ProductViewModel product)
         {
+            if (product.ImageFile != null)
+            {
+                if (product.ImageFile.Length > 10 * 1024 * 1024)
+                {
+                    ModelState.AddModelError("ImageFile", "Product image size cannot exceed 10 MB!");
+                    LoadCategoriesAndManufacturers();
+                    return View(product);
+                }
+                if (Path.GetExtension(product.ImageFile.FileName).ToLower() != ".jpg")
+                {
+                    ModelState.AddModelError("ImageFile", "Product image must be .jpg only!");
+                    LoadCategoriesAndManufacturers();
+                    return View(product);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("ImageFile", "Product image is required!");
+                LoadCategoriesAndManufacturers();
+                return View(product);
+            }
+
+
             Product? newProduct= _dbContext.Products.SingleOrDefault(c => c.Id == product.Id);
 
             if (newProduct == null)
@@ -168,6 +234,21 @@ namespace MVC_Web.Controllers
 
             _dbContext.Products.Update(newProduct);
             _dbContext.SaveChanges();
+
+            if (product.ImageFile != null)
+            {
+                string dirPath = Path.Combine(_webHostEnvironment.WebRootPath, "images", "Products");
+
+                if (!Directory.Exists(dirPath))
+                    Directory.CreateDirectory(dirPath);
+
+                string filePath = Path.Combine(dirPath, $"{newProduct.Id}.jpg");
+                using FileStream fileStream = new FileStream(filePath, FileMode.Create);
+                product.ImageFile.CopyTo(fileStream);
+            }
+
+            TempData["Message"] = $"Výrobek {newProduct.Name} has been successfully edited.";
+            TempData["MessageType"] = "success";
 
             return RedirectToAction("List","Product");
         }

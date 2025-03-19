@@ -12,7 +12,7 @@
     </div>
 }
 
-<form asp-action="Add" class="mt-2 mb-2">
+<form asp-action="Add" class="mt-2 mb-2" enctype="multipart/form-data">
     <div class="row justify-content-center mb-2">
         <label asp-for="Name" class="col-sm-1 col-form-label">Název</label>
         <div class="col-sm-4">
@@ -62,6 +62,14 @@
                 }
             </select>
             <span asp-validation-for="CategoryId" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <label asp-for="ImageFile" class="col-sm-2 col-form-label">Obrázek výrobku</label>
+        <div class="col-sm-10">
+            <input asp-for="ImageFile" class="form-control">
+            <span asp-validation-for="ImageFile" class="text-danger xinvalid-feedback"></span>
         </div>
     </div>
     

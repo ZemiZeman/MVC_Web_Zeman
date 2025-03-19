@@ -12,7 +12,7 @@
     </div>
 }
 
-<form asp-action="Edit" class="mt-2 mb-2">
+<form asp-action="Edit" class="mt-2 mb-2" enctype="multipart/form-data">
     <div class="row justify-content-center mb-2">
         <label asp-for="Name" class="col-sm-1 col-form-label">Název</label>
         <div class="col-sm-4">
@@ -63,13 +63,22 @@
         </div>
     </div>
 
+    <div class="row mb-2">
+        <label asp-for="ImageFile" class="col-sm-2 col-form-label">Obrázek výrobku</label>
+        <div class="col-sm-10">
+            <input asp-for="ImageFile" class="form-control">
+            <span asp-validation-for="ImageFile" class="text-danger xinvalid-feedback"></span>
+        </div>
+    </div>
 
     <div class="row justify-content-center mb-2">
         <div class="col-5">
             <button type="submit" class="btn btn-sm btn-primary w-100">
-                Přidat výrobek
+                Upravit výrobek ✏️
             </button>
         </div>
     </div>
+
+    
 
 </form>
