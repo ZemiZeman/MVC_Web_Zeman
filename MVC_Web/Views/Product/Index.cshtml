@@ -63,3 +63,47 @@
         <a asp-action="Index" asp-controller="Home" asp-route-redirectedFromProduct="@true" class="btn btn-secondary mt-3">Zpět na seznam produktů</a>
     </div>
 </div>
+
+<hr />
+
+<div>
+    @if (Model.Reviews.Count > 0)
+    {
+        <div class="container mt-4">
+            @if (true)
+            {
+                double average = Math.Round(Model.Reviews.Average(r => r.Value), 1);
+                <div class="d-flex gap-5">
+                    <h2 class="mb-4">Recenze - (@Model.Reviews.Count x)</h2>
+                    <a asp-action="Index" asp-controller="Review" asp-route-productId="@Model.Id" class="btn btn-primary" style="height:fit-content">Přidat recenzi</a>
+                </div>
+                <h3 class="mb-4 text-primary">Průměrné hodnocení: @average / 5</h3>
+            }
+            
+            <ul class="list-group">
+                @foreach (var review in Model.Reviews)
+                {
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-1">Hodnocení: @review.Value / 5</h4>
+                                <h5 class="mb-1 fw-normal">@review.Description</h5>
+                                <small>Datum: @review.Date.ToShortDateString()</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">@review.Value</span>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="container mt-4">
+            <div class="d-flex gap-5">
+                <h2 class="mb-4 text-danger">Zatím žádné recenze</h2>
+                <a asp-action="Index" asp-controller="Review" asp-route-productId="@Model.Id" class="btn btn-primary" style="height:fit-content">Přidat recenzi</a>
+            </div>
+        </div>
+    }
+</div>

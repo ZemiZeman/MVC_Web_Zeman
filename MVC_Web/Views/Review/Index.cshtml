@@ -1,0 +1,23 @@
+﻿@using MVC_Web.Models;
+@model ReviewViewModel;
+
+@{
+}
+
+<h2>Přidat recenzi</h2>
+
+<form asp-action="Index" method="post">
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="mb-3">
+        <label for="Value" class="form-label">Hodnocení (1 - 5)</label>
+        <input type="number" class="form-control" id="Value" name="Value" min="1" max="5" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Popis</label>
+        <textarea class="form-control" id="Description" name="Description" rows="3" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Odeslat recenzi</button>
+</form>

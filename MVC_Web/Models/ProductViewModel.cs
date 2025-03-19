@@ -28,6 +28,7 @@ namespace MVC_Web.Models
         public virtual ManufacturerViewModel Manufacturer { get; set; }
 
         public IFormFile? ImageFile { get; set; }
+        public List<ReviewViewModel>? Reviews { get; set; }
 
         public ProductViewModel()
         {
@@ -40,6 +41,7 @@ namespace MVC_Web.Models
             Category = new CategoryViewModel();
             Manufacturer = new ManufacturerViewModel();
             ImageFile = null;
+            Reviews = new List<ReviewViewModel>();
         }
         public ProductViewModel(int id, string name, float price, string description, int categoryId, int manufacturerId, CategoryViewModel category, ManufacturerViewModel manufacturer)
         {

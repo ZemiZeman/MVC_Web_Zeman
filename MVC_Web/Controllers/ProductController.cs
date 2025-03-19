@@ -31,10 +31,14 @@ namespace MVC_Web.Controllers
 
             Category category = _dbContext.Categories.Single(c => c.Id == p.CategoryId);
             Manufacturer manufacturer = _dbContext.Manufacturer.Single(m=>m.Id==p.ManufacturerId);
+            List<Review> reviews = _dbContext.Reviews.Where(r=>r.ProductId==id).ToList();
 
             ProductViewModel product = new ProductViewModel(p.Id, p.Name, p.Price, p.Description, p.CategoryId, p.ManufacturerId,
                                                             new CategoryViewModel(category.Id, category.Name, category.Description),
                                                             new ManufacturerViewModel(manufacturer.Name, manufacturer.CounryOrigin));
+
+            List<ReviewViewModel> reviewViewModels = reviews.Select(r => new ReviewViewModel(r.Id, r.Date, r.Value, r.Description, r.ProductId)).ToList();
+            product.Reviews = reviewViewModels;
 
             return View(product);
         }
